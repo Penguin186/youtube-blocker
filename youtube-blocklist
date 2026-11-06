@@ -1,3 +1,5 @@
+! Pi-hole YouTube blocklist (ABP style)
+! Blocks YouTube domains and all subdomains.
 ||youtube.com^
 ||youtu.be^
 ||youtube-nocookie.com^
