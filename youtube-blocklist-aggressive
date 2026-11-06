@@ -1,0 +1,4 @@
+! Aggressive YouTube blocklist (ABP style)
+! May break other Google services on some setups.
+||youtubei.googleapis.com^
+||yt.google.com^
