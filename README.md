@@ -1,6 +1,8 @@
-# Pi-hole YouTube Blocklist (Regex)
+# Pi-hole YouTube Blocklist (ABP)
 
-A small regex blocklist for Pi-hole to block YouTube domains at the DNS level.
+A small [ABP-style](https://adblockplus.org/filter-cheatsheet) blocklist for Pi-hole to block YouTube at the DNS level.
+
+Uses `||domain^` syntax, which blocks the domain and all of its subdomains.
 
 ## What it blocks
 
@@ -18,31 +20,25 @@ A small regex blocklist for Pi-hole to block YouTube domains at the DNS level.
 - Does **not** reliably block the YouTube mobile app or Smart TV apps, which often use hardcoded IPs or DoH.
 - Blocking `googlevideo.com` can affect other Google video services.
 
-## Install in Pi-hole
+## Install in Pi-hole (v6+)
 
-### Manual (all versions)
+1. Copy the **raw** URL of `youtube-blocklist.txt`, e.g.  
+   `https://raw.githubusercontent.com/<user>/<repo>/main/youtube-blocklist.txt`
+2. In Pi-hole, go to **Settings → Lists**.
+3. Paste the raw URL into the **Address** field, add a comment if you like, and click **Add**.
+4. Go to **Tools → Update Gravity** (or run `pihole -g`) to download the list.
 
-1. Open Pi-hole admin → **Settings → Domains** (or **Group Management → Domains**).
-2. Choose **Regex** as the domain type and **Deny** as the action.
-3. Paste each line from `youtube-regex.txt` as a separate entry.
-4. Save and flush DNS (`pihole restartdns` or via the UI).
+Optional: repeat with `youtube-blocklist-aggressive.txt` if you want to also block the YouTube API endpoints.
 
-### Import by URL (Pi-hole v6+ Lists feature)
+## Why ABP and not regex?
 
-1. Copy the **raw** URL of `youtube-regex.txt`, e.g.
-   `https://raw.githubusercontent.com/<user>/<repo>/main/youtube-regex.txt`
-2. Add it under **Settings → Lists**, set the type to **Regex**, and update gravity.
-3. If your Pi-hole version doesn't support regex lists by URL, use the manual method above.
-
-### Aggressive list (optional)
-
-Repeat the steps above with `youtube-regex-aggressive.txt` if you want to also block the YouTube API endpoints.
+Pi-hole's **Lists** feature (subscribing to a URL) does **not** accept regex. It accepts normal domain entries and ABP-style `||domain^` entries. ABP syntax gives the same "domain + all subdomains" behavior as the regex approach, but in a single subscribable file.
 
 ## Notes
 
-- Pi-hole regex matching applies to the **domain name only**, not the full URL or path.
-- Do not include `https://`, paths, or labels like `Regex deny` in the list files.
+- Pi-hole applies these at the DNS level, so anything resolved through Pi-hole is affected.
 - Clear your client DNS cache after applying changes.
+- Update gravity periodically to pick up changes.
 
 ## License
 
