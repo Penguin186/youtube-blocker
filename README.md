@@ -4,6 +4,17 @@ A small [ABP-style](https://adblockplus.org/filter-cheatsheet) blocklist for Pi-
 
 Uses `||domain^` syntax, which blocks the domain and all of its subdomains.
 
+## Quick Start
+
+1. Copy the raw URL: https://raw.githubusercontent.com/Penguin186/youtube-blocker/main/youtube-blocklist
+2. In Pi-hole (v6+), go to **Settings → Lists**.
+3. Paste the URL into the **Address** field and click **Add**.
+4. Go to **Tools → Update Gravity** (or run `pihole -g`).
+
+Done. Any device using Pi-hole for DNS will now have YouTube blocked.
+
+> Requires **Pi-hole v6 or newer** for the Lists subscription feature. Older versions need the entries added manually.
+
 ## What it blocks
 
 - `youtube.com` and all subdomains
@@ -22,15 +33,27 @@ This works across browsers, the YouTube mobile app, and TV/console apps because 
 - Does **not** remove in-video ads that are served from the same domain as the video content.
 - Blocking `googlevideo.com` can affect other Google video services on the same network.
 
-## Install in Pi-hole (v6+)
+## Files
 
-1. Copy the **raw** URL of `youtube-blocklist.txt`, e.g.  
-   `https://raw.githubusercontent.com/<user>/<repo>/main/youtube-blocklist.txt`
+| File | Description |
+| --- | --- |
+| `youtube-blocklist` | Main blocklist. Covers YouTube domains, video streams, and static assets. |
+| `youtube-blocklist-aggressive` | Optional. Adds `youtubei.googleapis.com` and `yt.google.com` to catch clients that fall back to the API. May break other Google services on some setups. |
+
+## Install (detailed)
+
+### Standard list
+
+1. Copy the raw URL of `youtube-blocklist`: https://raw.githubusercontent.com/Penguin186/youtube-blocker/main/youtube-blocklist
 2. In Pi-hole, go to **Settings → Lists**.
 3. Paste the raw URL into the **Address** field, add a comment if you like, and click **Add**.
 4. Go to **Tools → Update Gravity** (or run `pihole -g`) to download the list.
 
-Optional: repeat with `youtube-blocklist-aggressive.txt` if you want to also block the YouTube API endpoints (`youtubei.googleapis.com`, `yt.google.com`). This can help on some TV and mobile clients that fall back to the API when the main domains are blocked.
+### Aggressive list (optional)
+
+Repeat the steps above with: https://raw.githubusercontent.com/Penguin186/youtube-blocker/main/youtube-blocklist-aggressive
+
+This can help on some TV and mobile clients that fall back to the API when the main domains are blocked.
 
 ## Why ABP and not regex?
 
